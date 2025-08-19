@@ -44,16 +44,16 @@ const usePdfjs = () => {
 function PDFPagePreview({ imageDataUrl, selectedItem }) {
   if (!imageDataUrl) {
     return (
-      <div className="relative border-2 border-dashed rounded-2xl p-8 text-center transition-all duration-300 border-slate-300 bg-slate-50 hover:border-slate-400 hover:bg-slate-100">
+      <div className="relative border-2 border-dashed rounded-2xl p-4 sm:p-8 text-center transition-all duration-300 border-slate-300 bg-slate-50 hover:border-slate-400 hover:bg-slate-100">
         <div className="space-y-4">
-          <div className="w-16 h-16 mx-auto bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
-            <Eye className="w-8 h-8 text-white" />
+          <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+            <Eye className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-slate-700 mb-2">
+            <h3 className="text-base sm:text-lg font-semibold text-slate-700 mb-2">
               페이지 미리보기
             </h3>
-            <p className="text-sm text-slate-500">
+            <p className="text-xs sm:text-sm text-slate-500">
               왼쪽 목록에서 페이지를 선택하면 여기에서 미리볼 수 있어요
             </p>
           </div>
@@ -64,13 +64,13 @@ function PDFPagePreview({ imageDataUrl, selectedItem }) {
 
   return (
     <div className="flex-1 flex flex-col">
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-t-2xl p-4">
-        <h3 className="text-white font-medium flex items-center gap-2">
-          <FileText className="w-4 h-4" />
-          {selectedItem?.label}
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-t-2xl p-3 sm:p-4">
+        <h3 className="text-white font-medium flex items-center gap-2 text-sm sm:text-base">
+          <FileText className="w-4 h-4 flex-shrink-0" />
+          <span className="truncate">{selectedItem?.label}</span>
         </h3>
       </div>
-      <div className="flex-1 overflow-auto bg-white rounded-b-2xl p-6 shadow-inner">
+      <div className="flex-1 overflow-auto bg-white rounded-b-2xl p-3 sm:p-6 shadow-inner">
         <img
           src={imageDataUrl}
           alt="PDF Page Preview"
@@ -84,13 +84,13 @@ function PDFPagePreview({ imageDataUrl, selectedItem }) {
 // 파일 아이템 컴포넌트
 function FileItem({ file, onRemove, index }) {
   return (
-    <div className="group flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-white to-slate-50 border border-slate-200 hover:border-slate-300 hover:shadow-md transition-all duration-200">
-      <div className="flex items-center gap-4 min-w-0">
-        <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold shadow-sm">
+    <div className="group flex items-center justify-between p-3 sm:p-4 rounded-2xl bg-gradient-to-r from-white to-slate-50 border border-slate-200 hover:border-slate-300 hover:shadow-md transition-all duration-200">
+      <div className="flex items-center gap-3 min-w-0 flex-1">
+        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold shadow-sm text-xs sm:text-sm flex-shrink-0">
           {index + 1}
         </div>
-        <div className="min-w-0">
-          <h4 className="font-semibold text-slate-900 truncate text-sm">
+        <div className="min-w-0 flex-1">
+          <h4 className="font-semibold text-slate-900 truncate text-xs sm:text-sm">
             {file.name}
           </h4>
           <p className="text-xs text-slate-500 mt-1">
@@ -100,7 +100,7 @@ function FileItem({ file, onRemove, index }) {
       </div>
       <button
         onClick={() => onRemove(file.id)}
-        className="opacity-0 group-hover:opacity-100 p-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 transition-all duration-200"
+        className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 p-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 transition-all duration-200 flex-shrink-0 ml-2"
       >
         <Trash2 className="w-4 h-4" />
       </button>
@@ -130,7 +130,7 @@ function FileUploader({ onFileUpload, busy }) {
 
   return (
     <div
-      className={`relative border-2 border-dashed rounded-2xl p-8 text-center transition-all duration-300 ${
+      className={`relative border-2 border-dashed rounded-2xl p-4 sm:p-8 text-center transition-all duration-300 ${
         dragOver
           ? "border-blue-400 bg-blue-50"
           : "border-slate-300 bg-slate-50 hover:border-slate-400 hover:bg-slate-100"
@@ -148,14 +148,14 @@ function FileUploader({ onFileUpload, busy }) {
         disabled={busy}
       />
       <div className="space-y-4">
-        <div className="w-16 h-16 mx-auto bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
-          <Upload className="w-8 h-8 text-white" />
+        <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+          <Upload className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
         </div>
         <div>
-          <h3 className="text-lg font-semibold text-slate-700 mb-2">
+          <h3 className="text-base sm:text-lg font-semibold text-slate-700 mb-2">
             PDF 파일을 드래그하거나 클릭하세요
           </h3>
-          <p className="text-sm text-slate-500">
+          <p className="text-xs sm:text-sm text-slate-500">
             여러 파일을 한 번에 업로드할 수 있어요
           </p>
         </div>
@@ -376,45 +376,45 @@ export default function PDFMiniApp() {
     <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-blue-50">
       {/* 헤더 */}
       <div className="bg-white/80 backdrop-blur-sm border-b border-slate-200 top-0 z-10">
-        <div className="max-w-7xl mx-auto px-6 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
-                <Zap className="w-6 h-6 text-white" />
+            <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
+                <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
-              <div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
+              <div className="min-w-0">
+                <h1 className="text-xl sm:text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
                   PDF 마스터
                 </h1>
-                <p className="text-slate-500 text-sm mt-1">
+                <p className="text-slate-500 text-xs sm:text-sm mt-1 hidden sm:block">
                   PDF를 쉽고 빠르게 병합하고 정리하세요
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
               <a
                 href="https://github.com/kwakrhkr59/Pdf-Merge"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors flex items-center justify-center w-10 h-10"
+                className="p-2 sm:p-3 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10"
                 title="GitHub에서 보기"
               >
-                <Github className="w-full h-full text-black" />
+                <Github className="w-4 h-4 sm:w-full sm:h-full text-black" />
               </a>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-8">
           {/* 왼쪽 패널 */}
-          <div className="xl:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-4 sm:space-y-8">
             {/* 파일 업로드 섹션 */}
-            <div className="bg-white/70 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <Plus className="w-6 h-6 text-blue-600" />
-                <h2 className="text-xl font-bold text-slate-800">파일 추가</h2>
+            <div className="bg-white/70 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-4 sm:p-8">
+              <div className="flex items-center gap-3 mb-4 sm:mb-6">
+                <Plus className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+                <h2 className="text-lg sm:text-xl font-bold text-slate-800">파일 추가</h2>
               </div>
 
               {files.length === 0 ? (
@@ -439,7 +439,7 @@ export default function PDFMiniApp() {
                   <div className="flex gap-3">
                     <button
                       onClick={clearAll}
-                      className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition-all duration-200"
+                      className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition-all duration-200 text-sm"
                     >
                       <X className="w-4 h-4" />
                       모두 삭제
@@ -449,23 +449,23 @@ export default function PDFMiniApp() {
               )}
 
               {error && (
-                <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-2xl">
-                  <p className="text-red-700 text-sm">{error}</p>
+                <div className="mt-4 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-2xl">
+                  <p className="text-red-700 text-xs sm:text-sm">{error}</p>
                 </div>
               )}
             </div>
 
             {/* 페이지 순서 섹션 */}
             {items.length > 0 && (
-              <div className="bg-white/70 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-8">
-                <div className="flex items-center justify-between mb-6">
+              <div className="bg-white/70 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-4 sm:p-8">
+                <div className="flex items-center justify-between mb-4 sm:mb-6">
                   <div className="flex items-center gap-3">
-                    <Shuffle className="w-6 h-6 text-purple-600" />
-                    <h2 className="text-xl font-bold text-slate-800">
+                    <Shuffle className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
+                    <h2 className="text-lg sm:text-xl font-bold text-slate-800">
                       페이지 순서 ({items.length}개)
                     </h2>
                   </div>
-                  <span className="text-xs text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
+                  <span className="text-xs text-slate-500 bg-slate-100 px-2 sm:px-3 py-1 rounded-full hidden sm:inline">
                     드래그로 순서 변경
                   </span>
                 </div>
@@ -475,7 +475,7 @@ export default function PDFMiniApp() {
                     <div
                       key={item.id}
                       onClick={() => setSelectedIdx(idx)}
-                      className={`group flex items-center justify-between p-4 rounded-2xl cursor-pointer transition-all duration-200 ${
+                      className={`group flex items-center justify-between p-3 sm:p-4 rounded-2xl cursor-pointer transition-all duration-200 ${
                         selectedIdx === idx
                           ? "bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-300 shadow-md"
                           : "bg-white hover:bg-slate-50 border-2 border-transparent hover:border-slate-200"
@@ -493,9 +493,9 @@ export default function PDFMiniApp() {
                         )
                       }
                     >
-                      <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
                         <div
-                          className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm font-bold ${
+                          className={`w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0 ${
                             selectedIdx === idx
                               ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-md"
                               : "bg-slate-200 text-slate-700"
@@ -503,38 +503,38 @@ export default function PDFMiniApp() {
                         >
                           {idx + 1}
                         </div>
-                        <span className="text-sm font-medium text-slate-800">
+                        <span className="text-xs sm:text-sm font-medium text-slate-800 truncate">
                           {item.label}
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="flex items-center gap-1 sm:gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex-shrink-0">
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             handlePageAction({ type: "move", dir: -1 }, idx);
                           }}
-                          className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors"
+                          className="p-1 sm:p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors"
                         >
-                          <ArrowUp className="w-4 h-4" />
+                          <ArrowUp className="w-3 h-3 sm:w-4 sm:h-4" />
                         </button>
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             handlePageAction({ type: "move", dir: 1 }, idx);
                           }}
-                          className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors"
+                          className="p-1 sm:p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors"
                         >
-                          <ArrowDown className="w-4 h-4" />
+                          <ArrowDown className="w-3 h-3 sm:w-4 sm:h-4" />
                         </button>
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             removePage(idx);
                           }}
-                          className="p-1.5 rounded-lg bg-red-100 hover:bg-red-200 text-red-600 transition-colors"
+                          className="p-1 sm:p-1.5 rounded-lg bg-red-100 hover:bg-red-200 text-red-600 transition-colors"
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
                         </button>
                       </div>
                     </div>
@@ -545,21 +545,21 @@ export default function PDFMiniApp() {
           </div>
 
           {/* 오른쪽 패널 - 미리보기 */}
-          <div className="xl:col-span-1">
-            <div className="bg-white/70 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-6 sticky top-32">
+          <div className="lg:col-span-1">
+            <div className="bg-white/70 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-3 sm:p-6 sticky top-4 sm:top-32">
               <PDFPagePreview
                 imageDataUrl={selectedPageImage}
                 selectedItem={selectedItem}
               />
 
               {items.length > 0 && selectedIdx !== null && (
-                <div className="mt-6 flex gap-3">
+                <div className="mt-4 sm:mt-6 flex gap-2 sm:gap-3">
                   <button
                     onClick={() =>
                       setSelectedIdx((prev) => Math.max(0, prev - 1))
                     }
                     disabled={selectedIdx === 0}
-                    className="flex-1 p-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                    className="flex-1 p-2 sm:p-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 text-sm"
                   >
                     이전
                   </button>
@@ -570,7 +570,7 @@ export default function PDFMiniApp() {
                       )
                     }
                     disabled={selectedIdx === items.length - 1}
-                    className="flex-1 p-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                    className="flex-1 p-2 sm:p-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 text-sm"
                   >
                     다음
                   </button>
@@ -582,22 +582,22 @@ export default function PDFMiniApp() {
 
         {/* 병합 버튼 */}
         {items.length > 0 && (
-          <div className="mt-8">
-            <div className="bg-white/70 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-8">
+          <div className="mt-4 sm:mt-8">
+            <div className="bg-white/70 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-4 sm:p-8">
               <button
                 onClick={mergeAndDownload}
                 disabled={busy}
-                className="w-full p-6 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-lg font-bold disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-3"
+                className="w-full p-4 sm:p-6 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-base sm:text-lg font-bold disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 sm:gap-3"
               >
                 {busy ? (
                   <>
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    병합 처리 중...
+                    <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span className="text-sm sm:text-base">병합 처리 중...</span>
                   </>
                 ) : (
                   <>
-                    <Download className="w-5 h-5" />
-                    {items.length}개 페이지 병합 & 다운로드
+                    <Download className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <span className="text-sm sm:text-base">{items.length}개 페이지 병합 & 다운로드</span>
                   </>
                 )}
               </button>
@@ -606,11 +606,11 @@ export default function PDFMiniApp() {
         )}
 
         {/* 푸터 */}
-        <div className="mt-12 text-center">
-          <div className="inline-block bg-white/50 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/50">
-            <p className="text-xs text-slate-500 flex items-center gap-2">
+        <div className="mt-8 sm:mt-12 text-center">
+          <div className="inline-block bg-white/50 backdrop-blur-sm rounded-2xl px-4 sm:px-6 py-3 sm:py-4 border border-white/50">
+            <p className="text-xs text-slate-500 flex items-center justify-center gap-2">
               <span>🔒</span>
-              모든 처리가 브라우저에서 이루어져 파일이 외부로 전송되지 않습니다
+              <span className="text-center">모든 처리가 브라우저에서 이루어져 파일이 외부로 전송되지 않습니다</span>
             </p>
           </div>
         </div>
