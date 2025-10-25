@@ -71,30 +71,90 @@ export default function PDFMiniApp() {
   );
 
   // 페이지 삭제
+  // const removePage = useCallback(
+  //   (idx) => {
+  //     setItems((prevItems) => {
+  //       const nextItems = prevItems.filter((_, i) => i !== idx);
+  //       const newSelectedIdx =
+  //         selectedIdx === idx
+  //           ? idx > 0
+  //             ? idx - 1
+  //             : nextItems.length > 0 ? 0 : null
+  //           : selectedIdx > idx
+  //           ? selectedIdx - 1
+  //           : selectedIdx;
+
+  //       setSelectedIdx(newSelectedIdx);
+  //       return nextItems;
+  //     });
+  //   },
+  //   [selectedIdx]
+  // );
   const removePage = useCallback(
     (idx) => {
-      setItems((prevItems) => {
-        const nextItems = prevItems.filter((_, i) => i !== idx);
-        const newSelectedIdx =
-          selectedIdx === idx
-            ? idx > 0
-              ? idx - 1
-              : nextItems.length > 0 ? 0 : null
-            : selectedIdx > idx
-            ? selectedIdx - 1
-            : selectedIdx;
+        setItems((prevItems) => {
+            const itemToRemove = prevItems[idx];
+            if (!itemToRemove) return prevItems;
 
-        setSelectedIdx(newSelectedIdx);
-        return nextItems;
-      });
+            const fileId = itemToRemove.fileId;
+            const nextItems = prevItems.filter((_, i) => i !== idx);
+
+            // 1. items에서 해당 파일의 남은 페이지 확인
+            const remainingPages = nextItems.filter((item) => item.fileId === fileId);
+
+            if (remainingPages.length === 0) {
+                // 2. 남은 페이지가 없으면 files 목록에서 해당 파일 삭제 👈 추가된 로직
+                setFiles((prevFiles) => prevFiles.filter((f) => f.id !== fileId));
+            }
+
+            // 3. 선택 인덱스 조정 (기존 로직 유지)
+            const newSelectedIdx =
+                selectedIdx === idx
+                    ? idx > 0
+                        ? idx - 1
+                        : nextItems.length > 0 ? 0 : null
+                    : selectedIdx > idx
+                        ? selectedIdx - 1
+                        : selectedIdx;
+
+            setSelectedIdx(newSelectedIdx);
+            return nextItems;
+        });
     },
     [selectedIdx]
-  );
+);
 
   // 파일 삭제
-  const removeFile = useCallback((fileIdToRemove) => {
-    setFiles((prevFiles) => prevFiles.filter((f) => f.id !== fileIdToRemove));
-  }, []);
+  // const removeFile = useCallback((fileIdToRemove) => {
+  //   setFiles((prevFiles) => prevFiles.filter((f) => f.id !== fileIdToRemove));
+  // }, []);
+  const removeFile = useCallback(
+    (fileIdToRemove) => {
+        // 1. files 목록에서 파일 제거
+        setFiles((prevFiles) => prevFiles.filter((f) => f.id !== fileIdToRemove));
+
+        // 2. items 목록에서 해당 파일의 모든 페이지 제거 👈 추가된 로직
+        setItems((prevItems) => {
+            const nextItems = prevItems.filter((item) => item.fileId !== fileIdToRemove);
+            
+            // 삭제 후 선택 인덱스 조정 (선택된 페이지가 삭제되면 인덱스 재설정)
+            // (이 로직은 복잡해질 수 있으므로, 간단하게 모든 페이지가 사라지면 null, 아니면 0으로 임시 재설정하거나,
+            // items.length가 줄어들 때마다 선택 인덱스가 유효한지 확인하는 별도의 로직 필요.
+            // 여기서는 일단 items가 비어있지 않으면 0번째를 선택하도록 단순화)
+            if (selectedIdx !== null) {
+                const isSelectedFileRemoved = prevItems[selectedIdx]?.fileId === fileIdToRemove;
+                if (isSelectedFileRemoved) {
+                    setSelectedIdx(nextItems.length > 0 ? 0 : null);
+                } else if (selectedIdx >= nextItems.length) {
+                    setSelectedIdx(nextItems.length > 0 ? nextItems.length - 1 : null);
+                }
+            }
+            
+            return nextItems;
+        });
+    },
+    [selectedIdx]
+);
 
   // 모두 지우기
   const clearAll = useCallback(() => {
