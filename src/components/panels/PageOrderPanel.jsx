@@ -1,6 +1,7 @@
 import React from "react";
 import { Shuffle } from "lucide-react";
 import { PageListItem } from "../core/PageListItem";
+import { DropZone } from "../core/DropZone";
 
 export function PageOrderPanel({
   items,
@@ -9,8 +10,13 @@ export function PageOrderPanel({
   handlePageAction,
   removePage,
   dragSrcIndex,
+  handleDragEnter,
+  handleDragLeave,
+  dragOverIdx,
 }) {
   if (items.length === 0) return null;
+  
+  const isDragging = dragSrcIndex.current !== null;
 
   return (
     <div className="bg-white/70 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-4 sm:p-8">
@@ -27,17 +33,42 @@ export function PageOrderPanel({
       </div>
 
       <div className="space-y-3 max-h-96 overflow-y-auto">
-        {items.map((item, idx) => (
-          <PageListItem
-            key={item.id}
-            item={item}
-            idx={idx}
-            selectedIdx={selectedIdx}
-            setSelectedIdx={setSelectedIdx}
-            handlePageAction={handlePageAction}
-            removePage={removePage}
+        {(isDragging || items.length === 0) && (
+          <DropZone 
+            idx={0} 
+            isDragOver={dragOverIdx === 0 && dragSrcIndex.current !== 0} 
+            handleDragEnter={handleDragEnter} 
+            handleDrop={handlePageAction}
             dragSrcIndex={dragSrcIndex}
           />
+        )}
+
+        {items.map((item, idx) => (
+          <React.Fragment key={item.id}>
+            <PageListItem
+              item={item}
+              idx={idx}
+              items={items}
+              selectedIdx={selectedIdx}
+              setSelectedIdx={setSelectedIdx}
+              handlePageAction={handlePageAction}
+              removePage={removePage}
+              dragSrcIndex={dragSrcIndex}
+              handleDragEnter={handleDragEnter}
+              handleDragLeave={handleDragLeave}
+              dragOverIdx={dragOverIdx}
+            />
+            
+            {isDragging && (
+              <DropZone 
+                idx={idx + 1} 
+                isDragOver={dragOverIdx === idx + 1} 
+                handleDragEnter={handleDragEnter} 
+                handleDrop={handlePageAction}
+                dragSrcIndex={dragSrcIndex}
+              />
+            )}
+          </React.Fragment>
         ))}
       </div>
     </div>

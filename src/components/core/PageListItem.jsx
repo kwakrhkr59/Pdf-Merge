@@ -4,27 +4,42 @@ import { ArrowUp, ArrowDown, Trash2 } from "lucide-react";
 export function PageListItem({
   item,
   idx,
+  items,
   selectedIdx,
   setSelectedIdx,
   handlePageAction,
   removePage,
   dragSrcIndex,
+  handleDragEnter,
+  handleDragLeave,
+  dragOverIdx,
 }) {
+  const isDraggingSource = dragSrcIndex.current !== null && dragSrcIndex.current === idx;
+
   return (
     <div
       key={item.id}
       onClick={() => setSelectedIdx(idx)}
-      className={`group flex items-center justify-between p-3 sm:p-4 rounded-2xl cursor-pointer transition-all duration-200 ${
-        selectedIdx === idx
-          ? "bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-300 shadow-md"
-          : "bg-white hover:bg-slate-50 border-2 border-transparent hover:border-slate-200"
-      }`}
+      className={`group flex items-center justify-between p-3 sm:p-4 rounded-2xl cursor-pointer transition-all duration-200 
+        ${selectedIdx === idx
+            ? "bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-300 shadow-md"
+            : "bg-white hover:bg-slate-50 border-2 border-transparent hover:border-slate-200"
+        }
+        ${isDraggingSource ? "opacity-30" : "opacity-100"}
+      `}
       draggable
       onDragStart={(e) => {
         e.dataTransfer.effectAllowed = "move";
         dragSrcIndex.current = idx;
+        const dragImg = new Image(0, 0);
+        e.dataTransfer.setDragImage(dragImg, 0, 0);
       }}
-      onDragOver={(e) => e.preventDefault()}
+      onDragEnter={() => handleDragEnter(idx)}
+      onDragLeave={() => handleDragLeave()}
+      onDragOver={(e) => {
+          e.preventDefault();
+          handleDragEnter(idx);
+      }}
       onDrop={() =>
         handlePageAction(
           { type: "drop", srcIdx: dragSrcIndex.current },

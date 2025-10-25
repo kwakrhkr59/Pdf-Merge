@@ -16,6 +16,8 @@ export default function PDFMiniApp() {
   const [error, setError] = useState("");
   const [selectedIdx, setSelectedIdx] = useState(null); // 미리보기 선택 페이지 인덱스
   const dragSrcIndex = useRef(null);
+  const dragOverTimeout = useRef(null);
+  const [dragOverIdx, setDragOverIdx] = useState(null);
   const { isPdfjsLoaded, loadError } = usePdfjs();
 
   // PDF 파일 업로드 및 로딩 처리
@@ -171,6 +173,24 @@ export default function PDFMiniApp() {
     }
   }, [items, files, busy]);
 
+  // 드래그가 아이템 위로 진입할 때
+    const handleDragEnter = useCallback((idx) => {
+        if (dragOverTimeout.current) {
+            clearTimeout(dragOverTimeout.current);
+        }
+        setDragOverIdx(idx);
+    }, []);
+
+    // 드래그가 아이템 밖으로 나갈 때 (지연 시간을 두어 깜빡임 방지)
+    const handleDragLeave = useCallback(() => {
+        if (dragOverTimeout.current) {
+            clearTimeout(dragOverTimeout.current);
+        }
+        dragOverTimeout.current = setTimeout(() => {
+            setDragOverIdx(null);
+        }, 50);
+    }, []);
+
   // 페이지 이동 및 드래그 앤 드롭 처리
   const handlePageAction = useCallback(
     (action, idx) => {
@@ -179,37 +199,44 @@ export default function PDFMiniApp() {
         let newSelectedIdx = selectedIdx;
 
         switch (action.type) {
-          case "move":
+          case "move": {
             const ni = idx + action.dir;
             if (ni < 0 || ni >= nextItems.length) return prevItems;
             const [movedItem] = nextItems.splice(idx, 1);
             nextItems.splice(ni, 0, movedItem);
             if (selectedIdx === idx) newSelectedIdx = ni;
             break;
-          case "drop":
+          }
+          case "drop": {
             const src = action.srcIdx;
             const dst = idx;
             if (src === null || src === dst) return prevItems;
             const [draggedItem] = nextItems.splice(src, 1);
             nextItems.splice(dst, 0, draggedItem);
+            
             // 선택된 페이지의 인덱스 조정 로직
             newSelectedIdx =
               selectedIdx === src
                 ? dst
                 : selectedIdx > src && selectedIdx <= dst
-                ? selectedIdx - 1
-                : selectedIdx < src && selectedIdx >= dst
-                ? selectedIdx + 1
-                : selectedIdx;
+                  ? selectedIdx - 1
+                  : selectedIdx < src && selectedIdx >= dst
+                    ? selectedIdx + 1
+                    : selectedIdx;
+            
+            dragSrcIndex.current = null;
+            setDragOverIdx(null); 
             break;
+          }
           default:
             return prevItems;
         }
+
         setSelectedIdx(newSelectedIdx);
         return nextItems;
       });
     },
-    [selectedIdx]
+    [selectedIdx, dragSrcIndex, setDragOverIdx]
   );
   
   // 미리보기에 필요한 데이터 계산
@@ -246,6 +273,9 @@ export default function PDFMiniApp() {
               handlePageAction={handlePageAction}
               removePage={removePage}
               dragSrcIndex={dragSrcIndex}
+              handleDragEnter={handleDragEnter}
+              handleDragLeave={handleDragLeave}
+              dragOverIdx={dragOverIdx}
             />
           </div>
 
