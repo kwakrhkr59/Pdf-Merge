@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { usePdfjs } from "./hooks/usePdfjs";
 import { processPdfFile, mergeAndDownloadPdfs } from "./utils/pdfProcessor";
 import { Header } from "./components/common/Header";

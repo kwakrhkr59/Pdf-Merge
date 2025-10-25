@@ -1,4 +1,3 @@
-import React from "react";
 import { Plus, X } from "lucide-react";
 import { FileUploader } from "../core/FileUploader";
 import { FileItem } from "../core/FileItem";

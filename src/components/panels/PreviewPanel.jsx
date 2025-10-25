@@ -1,4 +1,3 @@
-import React from "react";
 import { PDFPagePreview } from "../core/PDFPagePreview";
 
 export function PreviewPanel({ selectedPageImage, selectedItem, selectedIdx, items, setSelectedIdx }) {

@@ -1,4 +1,3 @@
-import React from "react";
 import { ArrowUp, ArrowDown, Trash2 } from "lucide-react";
 
 export function PageListItem({

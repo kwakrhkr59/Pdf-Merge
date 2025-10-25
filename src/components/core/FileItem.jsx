@@ -1,4 +1,3 @@
-import React from "react";
 import { Trash2, Plus } from "lucide-react";
 
 export function FileItem({ file, onRemove, onDuplicatePages, index }) {

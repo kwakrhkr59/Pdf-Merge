@@ -1,4 +1,3 @@
-import React from "react";
 import { Zap, Github } from "lucide-react";
 
 export function Header() {

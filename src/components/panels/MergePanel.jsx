@@ -1,4 +1,3 @@
-import React from "react";
 import { Download } from "lucide-react";
 
 export function MergePanel({ items, busy, onMergeAndDownload }) {

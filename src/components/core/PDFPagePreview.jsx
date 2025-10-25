@@ -1,4 +1,3 @@
-import React from "react";
 import { Eye, FileText } from "lucide-react";
 
 export function PDFPagePreview({ imageDataUrl, selectedItem }) {

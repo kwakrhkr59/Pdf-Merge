@@ -1,5 +1,3 @@
-import React from "react";
-
 export function Footer() {
   return (
     <div className="mt-8 sm:mt-12 text-center">
