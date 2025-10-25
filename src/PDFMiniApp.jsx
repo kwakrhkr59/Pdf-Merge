@@ -133,6 +133,7 @@ export default function PDFMiniApp() {
   // 모두 지우기
   const clearAll = useCallback(() => {
     setFiles([]);
+    setItems([]);
     setError("");
     setSelectedIdx(null);
   }, []);
