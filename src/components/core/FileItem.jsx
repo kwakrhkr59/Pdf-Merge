@@ -1,7 +1,7 @@
 import React from "react";
-import { Trash2 } from "lucide-react";
+import { Trash2, Plus } from "lucide-react";
 
-export function FileItem({ file, onRemove, index }) {
+export function FileItem({ file, onRemove, onDuplicatePages, index }) {
   return (
     <div className="group flex items-center justify-between p-3 sm:p-4 rounded-2xl bg-gradient-to-r from-white to-slate-50 border border-slate-200 hover:border-slate-300 hover:shadow-md transition-all duration-200">
       <div className="flex items-center gap-3 min-w-0 flex-1">
@@ -17,12 +17,23 @@ export function FileItem({ file, onRemove, index }) {
           </p>
         </div>
       </div>
-      <button
-        onClick={() => onRemove(file.id)}
-        className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 p-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 transition-all duration-200 flex-shrink-0 ml-2"
-      >
-        <Trash2 className="w-4 h-4" />
-      </button>
+      <div className="flex items-center gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex-shrink-0 ml-2">
+        <button
+          onClick={() => onDuplicatePages(file)}
+          className="p-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-600 transition-all duration-200 flex-shrink-0"
+          title="페이지 목록에 이 파일의 페이지들을 다시 추가"
+        >
+          <Plus className="w-4 h-4" />
+        </button>
+
+        <button
+          onClick={() => onRemove(file.id)}
+          className="p-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 transition-all duration-200 flex-shrink-0"
+          title="파일 삭제"
+        >
+          <Trash2 className="w-4 h-4" />
+        </button>
+      </div>
     </div>
   );
 }

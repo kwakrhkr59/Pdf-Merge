@@ -108,17 +108,11 @@ export default function PDFMiniApp() {
   // 파일 삭제
   const removeFile = useCallback(
     (fileIdToRemove) => {
-        // 1. files 목록에서 파일 제거
         setFiles((prevFiles) => prevFiles.filter((f) => f.id !== fileIdToRemove));
 
-        // 2. items 목록에서 해당 파일의 모든 페이지 제거 👈 추가된 로직
         setItems((prevItems) => {
             const nextItems = prevItems.filter((item) => item.fileId !== fileIdToRemove);
             
-            // 삭제 후 선택 인덱스 조정 (선택된 페이지가 삭제되면 인덱스 재설정)
-            // (이 로직은 복잡해질 수 있으므로, 간단하게 모든 페이지가 사라지면 null, 아니면 0으로 임시 재설정하거나,
-            // items.length가 줄어들 때마다 선택 인덱스가 유효한지 확인하는 별도의 로직 필요.
-            // 여기서는 일단 items가 비어있지 않으면 0번째를 선택하도록 단순화)
             if (selectedIdx !== null) {
                 const isSelectedFileRemoved = prevItems[selectedIdx]?.fileId === fileIdToRemove;
                 if (isSelectedFileRemoved) {
@@ -137,10 +131,30 @@ export default function PDFMiniApp() {
   // 모두 지우기
   const clearAll = useCallback(() => {
     setFiles([]);
-    // items는 useEffect에서 업데이트됨
     setError("");
     setSelectedIdx(null);
   }, []);
+
+  // 파일 페이지 복제 및 추가
+  const duplicateFilePages = useCallback(
+      (fileToDuplicate) => {
+          const newPages = Array.from({ length: fileToDuplicate.pageCount }, (_, pageIdx) => ({
+              id: `${fileToDuplicate.id}-${pageIdx}-${Date.now()}-${Math.random()}`,
+              fileId: fileToDuplicate.id,
+              pageIdx,
+              label: `${fileToDuplicate.name} - ${pageIdx + 1}페이지 (복제)`,
+          }));
+
+          setItems((prevItems) => [...prevItems, ...newPages]);
+          
+          setSelectedIdx((prevSelectedIdx) => {
+              const newIndex = items.length;
+              return newIndex;
+          });
+
+      },
+      [items.length]
+  );
 
   // PDF 병합 및 다운로드
   const handleMergeAndDownload = useCallback(async () => {
@@ -223,6 +237,7 @@ export default function PDFMiniApp() {
               onFileUpload={handleFiles}
               onRemoveFile={removeFile}
               onClearAll={clearAll}
+              onDuplicatePages={duplicateFilePages}
             />
             <PageOrderPanel
               items={items}

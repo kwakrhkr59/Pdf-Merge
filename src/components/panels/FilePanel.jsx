@@ -3,7 +3,7 @@ import { Plus, X } from "lucide-react";
 import { FileUploader } from "../core/FileUploader";
 import { FileItem } from "../core/FileItem";
 
-export function FilePanel({ files, busy, error, onFileUpload, onRemoveFile, onClearAll }) {
+export function FilePanel({ files, busy, error, onFileUpload, onRemoveFile, onClearAll, onDuplicatePages }) {
   return (
     <div className="bg-white/70 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-4 sm:p-8">
       <div className="flex items-center gap-3 mb-4 sm:mb-6">
@@ -21,6 +21,7 @@ export function FilePanel({ files, busy, error, onFileUpload, onRemoveFile, onCl
                 key={file.id}
                 file={file}
                 onRemove={onRemoveFile}
+                onDuplicatePages={onDuplicatePages}
                 index={index}
               />
             ))}
