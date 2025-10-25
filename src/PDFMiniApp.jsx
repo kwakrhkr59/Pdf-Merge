@@ -42,8 +42,21 @@ export default function PDFMiniApp() {
         );
 
         setFiles((prevFiles) => [...prevFiles, ...newFilesData]);
+
+        setItems((prevItems) => {
+          const newPages = newFilesData.flatMap((f) =>
+            Array.from({ length: f.pageCount }, (_, pageIdx) => ({
+              id: `${f.id}-${pageIdx}`,
+              fileId: f.id,
+              pageIdx,
+              label: `${f.name} - ${pageIdx + 1}페이지`,
+            }))
+          );
+          return [...prevItems, ...newPages];
+        });
+
         if (selectedIdx === null && newFilesData.length > 0) {
-          setSelectedIdx(0);
+          setSelectedIdx(items.length > 0 ? items.length : 0);
         }
       } catch (e) {
         console.error(e);
@@ -54,21 +67,8 @@ export default function PDFMiniApp() {
         setBusy(false);
       }
     },
-    [isPdfjsLoaded, loadError, selectedIdx]
+    [isPdfjsLoaded, loadError, selectedIdx, items.length]
   );
-
-  // 파일 상태가 변경될 때마다 items를 재계산 (페이지 목록 업데이트)
-  useEffect(() => {
-    const newItems = files.flatMap((f) =>
-      Array.from({ length: f.pageCount }, (_, pageIdx) => ({
-        id: `${f.id}-${pageIdx}`,
-        fileId: f.id,
-        pageIdx,
-        label: `${f.name} - ${pageIdx + 1}페이지`,
-      }))
-    );
-    setItems(newItems);
-  }, [files]);
 
   // 페이지 삭제
   const removePage = useCallback(
