@@ -71,25 +71,6 @@ export default function PDFMiniApp() {
   );
 
   // 페이지 삭제
-  // const removePage = useCallback(
-  //   (idx) => {
-  //     setItems((prevItems) => {
-  //       const nextItems = prevItems.filter((_, i) => i !== idx);
-  //       const newSelectedIdx =
-  //         selectedIdx === idx
-  //           ? idx > 0
-  //             ? idx - 1
-  //             : nextItems.length > 0 ? 0 : null
-  //           : selectedIdx > idx
-  //           ? selectedIdx - 1
-  //           : selectedIdx;
-
-  //       setSelectedIdx(newSelectedIdx);
-  //       return nextItems;
-  //     });
-  //   },
-  //   [selectedIdx]
-  // );
   const removePage = useCallback(
     (idx) => {
         setItems((prevItems) => {
@@ -125,9 +106,6 @@ export default function PDFMiniApp() {
 );
 
   // 파일 삭제
-  // const removeFile = useCallback((fileIdToRemove) => {
-  //   setFiles((prevFiles) => prevFiles.filter((f) => f.id !== fileIdToRemove));
-  // }, []);
   const removeFile = useCallback(
     (fileIdToRemove) => {
         // 1. files 목록에서 파일 제거
